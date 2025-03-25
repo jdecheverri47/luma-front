@@ -102,31 +102,31 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-export async function authMiddleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+// export async function authMiddleware(req: NextRequest) {
+//   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+//   if (!token) {
+//     return NextResponse.redirect(new URL("/login", req.url));
+//   }
 
-  const nowInSec = Math.floor(Date.now() / 1000);
-  if (token.exp && token.exp < nowInSec) {
-    const res = NextResponse.redirect(new URL("/login", req.url));
-    res.cookies.delete("accessToken");
-    return res;
-  }
+//   const nowInSec = Math.floor(Date.now() / 1000);
+//   if (token.exp && token.exp < nowInSec) {
+//     const res = NextResponse.redirect(new URL("/login", req.url));
+//     res.cookies.delete("accessToken");
+//     return res;
+//   }
 
-  if (token.accessToken) {
-    const res = NextResponse.next();
-    res.cookies.set("accessToken", token.accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-      // domain: "dev.remote.api.lumasystems.ai",
-    });
-    return res;
-  }
+//   if (token.accessToken) {
+//     const res = NextResponse.next();
+//     res.cookies.set("accessToken", token.accessToken, {
+//       httpOnly: true,
+//       secure: true,
+//       sameSite: "none",
+//       path: "/",
+//       // domain: "dev.remote.api.lumasystems.ai",
+//     });
+//     return res;
+//   }
 
-  return NextResponse.next();
-}
+//   return NextResponse.next();
+// }
